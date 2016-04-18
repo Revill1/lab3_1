@@ -62,6 +62,7 @@ public class BookKeeperTestClass {
 		request.add(new RequestItem(productData,1, new Money(new BigDecimal(255))));
 		request.add(new RequestItem(productData2,2,new Money(new BigDecimal(200))));
 		when(policy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class))).thenReturn(new Tax(new Money(new BigDecimal(40)),"test"));
+		
 		Invoice invoice = bookKeeper.issuance(request, policy);
 		
 		verify(policy,times(2)).calculateTax(any(ProductType.class),any(Money.class));
@@ -80,9 +81,30 @@ public class BookKeeperTestClass {
 		
 		when(policy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class))).thenReturn(new Tax(new Money(new BigDecimal(40)),"test"));
 		Invoice invoice = bookKeeper.issuance(request, policy);
-		
-		//verify(policy,times(1)).calculateTax(any(ProductType.class),any(Money.class));
+	
 		assertThat(invoice.getItems().size(), is(0));
+	}
+	
+	@Test
+	public void bookKeeperTestIfGetItemsMethodWasExecuted()
+	{		
+		TaxPolicy policy = mock(TaxPolicy.class);
+		InvoiceRequest request = mock(InvoiceRequest.class);
+		
+		ClientData client = new ClientData(new Id("1"),"klient1");
+		ProductData productData1 = new ProductData(new Id("1"), new Money(new BigDecimal(500)), "NAME1", ProductType.FOOD, new Date());
+		ProductData productData2 = new ProductData(new Id("2"), new Money(new BigDecimal(50)), "NAME2", ProductType.STANDARD, new Date());
+		
+	//	InvoiceRequest request = new InvoiceRequest(client);
+		InvoiceFactory factory = new InvoiceFactory();
+		BookKeeper bookKeeper = new BookKeeper(factory);
+		
+		request.add(new RequestItem(productData1,1, new Money(new BigDecimal(255))));
+		request.add(new RequestItem(productData2,2, new Money(new BigDecimal(255))));		
+		when(policy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class))).thenReturn(new Tax(new Money(new BigDecimal(40)),"test"));
+		Invoice invoice = bookKeeper.issuance(request, policy);
+
+		verify(request, times(1)).getItems();
 	}
 	
 }
