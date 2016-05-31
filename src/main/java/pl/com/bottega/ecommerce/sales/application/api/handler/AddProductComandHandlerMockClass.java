@@ -55,7 +55,7 @@ public class AddProductComandHandlerMockClass {
 		ReservationRepository reservationRepository = Mockito
 				.mock(ReservationRepository.class);
 		Mockito.when(reservationRepository.load(new Id("1"))).thenReturn(
-				new Reservation(id, Reservation.ReservationStatus.CLOSED,
+				new Reservation(id, Reservation.ReservationStatus.OPENED,
 						new ClientData(id, "Klient"), new Date()));
 
 		return reservationRepository;

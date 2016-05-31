@@ -15,30 +15,46 @@ import org.hamcrest.Matchers;
 
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sales.application.api.command.AddProductCommand;
+import pl.com.bottega.ecommerce.sales.application.api.handler.AddProductComandHandlerMockClass;
 import pl.com.bottega.ecommerce.sales.application.api.handler.AddProductCommandHandler;
 import pl.com.bottega.ecommerce.sales.domain.client.Client;
 import pl.com.bottega.ecommerce.sales.domain.client.ClientRepository;
 import pl.com.bottega.ecommerce.sales.domain.equivalent.SuggestionService;
+import pl.com.bottega.ecommerce.sales.domain.productscatalog.Product;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductRepository;
+import pl.com.bottega.ecommerce.sales.domain.reservation.Reservation;
 import pl.com.bottega.ecommerce.sales.domain.reservation.ReservationRepository;
+import pl.com.bottega.ecommerce.sharedkernel.exceptions.DomainOperationException.DomainOperationException;
 import pl.com.bottega.ecommerce.system.application.SystemContext;
 
 public class AddProductCommandHandlerTest {
-	@Test
-	public void addProductCommandHandlerTest() {
-		ReservationRepository reservationRepository = mock(ReservationRepository.class);
-		ProductRepository productRepository = mock(ProductRepository.class);
-		SuggestionService suggestionService = mock(SuggestionService.class);
-		ClientRepository clientRepository = mock(ClientRepository.class);
-		SystemContext systemContext = mock(SystemContext.class);
-		AddProductCommand addProductCommand = mock(AddProductCommand.class);
-		
-	//	AddProductCommand addProductCommand = new AddProductCommand(new Id("1"), new Id("1"), 23);
-		AddProductCommandHandler handler = new AddProductCommandHandler();
-	//	handler.handle(addProductCommand);
-		
-//		Mockito.when(handler.handle(addProductCommand)).thenReturn(null);
-		verify(reservationRepository,times(0)).load(new Id("2"));
-	}
 
+    private AddProductCommandHandler productCommandHandler;
+    private AddProductCommand productCommand;
+    private ProductRepository productRepository;
+    private ReservationRepository reservationRepository;
+    private SuggestionService suggestionService;
+    private ClientRepository clientRepository;
+    private SystemContext systemContext;
+
+    @Before
+    public void init()
+    {
+        reservationRepository = AddProductComandHandlerMockClass.reservationRepositoryMock();
+        productRepository = AddProductComandHandlerMockClass.productRepositoryMock();
+        suggestionService = AddProductComandHandlerMockClass.suggestionServiceMock();
+        clientRepository = AddProductComandHandlerMockClass.clientRepositoryMock();
+        systemContext = new SystemContext();
+
+        productCommandHandler = new AddProductCommandHandler(reservationRepository, productRepository, suggestionService, clientRepository, systemContext);
+        productCommand = new AddProductCommand(new Id("4"),new Id("4"),123);
+        productCommandHandler.handle(productCommand);
+    }
+
+    
+    public void Test()
+    {
+    	Mockito.verify(clientRepository, Mockito.times(1)).load(new Id("4"));
+
+    }
 }
