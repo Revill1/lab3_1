@@ -55,6 +55,6 @@ public class AddProductCommandHandlerTest {
     public void Test()
     {
     	Mockito.verify(clientRepository, Mockito.times(1)).load(new Id("4"));
-
+    	Mockito.verify(reservationRepository, Mockito.times(1)).save(Mockito.any(Reservation.class));
     }
 }
