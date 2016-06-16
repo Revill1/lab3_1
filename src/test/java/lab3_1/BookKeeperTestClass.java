@@ -74,9 +74,7 @@ public class BookKeeperTestClass {
 				255))));
 		request.add(new RequestItem(productData2, 2, new Money(new BigDecimal(
 				200))));
-		when(
-				policy.calculateTax(Mockito.any(ProductType.class),
-						Mockito.any(Money.class))).thenReturn(
+		when(policy.calculateTax(Mockito.any(ProductType.class),Mockito.any(Money.class))).thenReturn(
 				new Tax(new Money(new BigDecimal(40)), "test"));
 
 		Invoice invoice = bookKeeper.issuance(request, policy);
@@ -89,11 +87,9 @@ public class BookKeeperTestClass {
 	@Test
 	public void bookKeeperTestNoInvoice() {
 		TaxPolicy policy = mock(TaxPolicy.class);
-		ClientData client = new ClientData(new Id("1"), "klient1");
-
-		InvoiceRequest request = new InvoiceRequest(client);
-		InvoiceFactory factory = new InvoiceFactory();
-		BookKeeper bookKeeper = new BookKeeper(factory);
+		ClientData client = new ClientDataBuilder().build();
+		InvoiceRequest request = new InvoiceRequestBuilder().build();
+		BookKeeper bookKeeper = new BookKeeperBuilder().build();
 
 		when(
 				policy.calculateTax(Mockito.any(ProductType.class),
@@ -108,16 +104,11 @@ public class BookKeeperTestClass {
 	public void bookKeeperTestIfGetItemsMethodWasExecuted() {
 		TaxPolicy policy = mock(TaxPolicy.class);
 		InvoiceRequest request = mock(InvoiceRequest.class);
-
-		ClientData client = new ClientData(new Id("1"), "klient1");
 		ProductData productData1 = new ProductData(new Id("1"), new Money(
 				new BigDecimal(500)), "NAME1", ProductType.FOOD, new Date());
 		ProductData productData2 = new ProductData(new Id("2"), new Money(
 				new BigDecimal(50)), "NAME2", ProductType.STANDARD, new Date());
-
-		// InvoiceRequest request = new InvoiceRequest(client);
-		InvoiceFactory factory = new InvoiceFactory();
-		BookKeeper bookKeeper = new BookKeeper(factory);
+		BookKeeper bookKeeper = new BookKeeperBuilder().build();
 
 		request.add(new RequestItem(productData1, 1, new Money(new BigDecimal(
 				255))));
