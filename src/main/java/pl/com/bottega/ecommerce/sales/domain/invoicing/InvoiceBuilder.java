@@ -8,9 +8,9 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public class InvoiceBuilder {
 
-	private ClientData client;
-	private Id id;
-	private List<InvoiceLine> items;
+	private ClientData client = new ClientData(new Id("1"),"Client");
+	private Id id = new Id("1");
+	
 
 	public InvoiceBuilder(){}
 	
@@ -26,7 +26,7 @@ public class InvoiceBuilder {
 		return this;
 	}
 	
-	public Invoice build(Id id, ClientData client)
+	public Invoice build()
 	{
 		return new Invoice(id,client);
 	}

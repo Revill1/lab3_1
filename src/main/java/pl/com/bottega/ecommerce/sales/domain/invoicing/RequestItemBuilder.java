@@ -1,15 +1,20 @@
 package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductData;
+import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductType;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public class RequestItemBuilder {
 
-	private ProductData productData;
+	private ProductData productData = new ProductData(Id.generate(),    new Money(new BigDecimal("1000"), "EUR"), "Product", ProductType.STANDARD, new Date());
 
-	private int quantity;
+	private int quantity = 1;
 
-	private Money totalCost;
+	private Money totalCost = new Money(new BigDecimal("100"),"EUR");
 	
 	public RequestItemBuilder(){}
 	
@@ -31,8 +36,8 @@ public class RequestItemBuilder {
 		return this;
 	}
 	
-	public RequestItem build(ProductData data, int quantity, Money totalCost)
+	public RequestItem build()
 	{
-		return new RequestItem(data, quantity, totalCost);
+		return new RequestItem(productData, quantity, totalCost);
 	}
 }

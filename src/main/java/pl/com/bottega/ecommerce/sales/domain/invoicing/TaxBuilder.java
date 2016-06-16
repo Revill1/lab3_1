@@ -7,7 +7,7 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 public class TaxBuilder {
 
 	private Money money = new Money(new BigDecimal("100"),"EUR");
-	private String description = "";
+	private String description = "opis";
 	
 	public TaxBuilder()	{}
 	
@@ -23,7 +23,7 @@ public class TaxBuilder {
 		return this;
 	}
 	
-	public Tax build(Money money, String description)
+	public Tax build()
 	{
 		return new Tax(money,description);
 	}

@@ -5,8 +5,8 @@ import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 
 public class ClientDataBuilder {
 
-	private Id id;
-	private String name;
+	private Id id = new Id("1");
+	private String name = "name";
 	
 	public ClientDataBuilder (){}
 	
@@ -22,7 +22,7 @@ public class ClientDataBuilder {
 		return this;
 	}
 	
-	public ClientData build(Id id, String name)
+	public ClientData build()
 	{
 		return new ClientData(id, name);
 	}

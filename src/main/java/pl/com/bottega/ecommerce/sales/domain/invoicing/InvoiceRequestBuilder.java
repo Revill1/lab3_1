@@ -1,10 +1,11 @@
 package pl.com.bottega.ecommerce.sales.domain.invoicing;
 
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.ClientData;
+import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 
 public class InvoiceRequestBuilder {
 
-	private ClientData client;	
+	private ClientData client = new ClientData(new Id("1"),"Client");	
 	
 	public InvoiceRequestBuilder(){}
 	
@@ -14,7 +15,7 @@ public class InvoiceRequestBuilder {
 		return this;
 	}
 	
-	public InvoiceRequest build (ClientData client)
+	public InvoiceRequest build ()
 	{
 		return new InvoiceRequest(client);
 	}

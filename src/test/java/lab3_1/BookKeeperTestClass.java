@@ -14,11 +14,14 @@ import pl.com.bottega.ecommerce.sales.application.api.command.AddProductCommand;
 import pl.com.bottega.ecommerce.sales.domain.client.ClientRepository;
 import pl.com.bottega.ecommerce.sales.domain.equivalent.SuggestionService;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.BookKeeper;
+import pl.com.bottega.ecommerce.sales.domain.invoicing.ClientDataBuilder;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.Invoice;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceFactory;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceRequest;
+import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceRequestBuilder;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.RequestItem;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.Tax;
+import pl.com.bottega.ecommerce.sales.domain.invoicing.TaxBuilder;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.TaxPolicy;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductData;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductRepository;
@@ -36,21 +39,20 @@ public class BookKeeperTestClass {
 	@Test
 	public void bookKeeperTestOneInvoice() {
 		TaxPolicy policy = mock(TaxPolicy.class);
-		ClientData client = new ClientData(new Id("1"), "klient1");
+		ClientData client = new ClientDataBuilder().build();
 		ProductData productData = new ProductData(new Id("1"), new Money(
 				new BigDecimal(50)), "NAME", ProductType.DRUG, new Date());
 
-		InvoiceRequest request = new InvoiceRequest(client);
+		InvoiceRequest request = new InvoiceRequestBuilder().build();
 		InvoiceFactory factory = new InvoiceFactory();
 		BookKeeper bookKeeper = new BookKeeper(factory);
 
 		request.add(new RequestItem(productData, 1, new Money(new BigDecimal(
 				255))));
-		when(
-				policy.calculateTax(Mockito.any(ProductType.class),
+		when(policy.calculateTax(Mockito.any(ProductType.class),
 						Mockito.any(Money.class))).thenReturn(
-				new Tax(new Money(new BigDecimal(40)), "test"));
-		Invoice invoice = bookKeeper.issuance(request, policy);
+				new TaxBuilder().build());
+			Invoice invoice = bookKeeper.issuance(request, policy);
 
 		assertThat(invoice.getItems().size(), is(1));
 	}
