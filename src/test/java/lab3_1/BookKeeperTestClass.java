@@ -14,6 +14,7 @@ import pl.com.bottega.ecommerce.sales.application.api.command.AddProductCommand;
 import pl.com.bottega.ecommerce.sales.domain.client.ClientRepository;
 import pl.com.bottega.ecommerce.sales.domain.equivalent.SuggestionService;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.BookKeeper;
+import pl.com.bottega.ecommerce.sales.domain.invoicing.BookKeeperBuilder;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.ClientDataBuilder;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.Invoice;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceFactory;
@@ -60,15 +61,14 @@ public class BookKeeperTestClass {
 	@Test
 	public void bookKeeperTestTwoInvoice() {
 		TaxPolicy policy = mock(TaxPolicy.class);
-		ClientData client = new ClientData(new Id("1"), "klient1");
+		ClientData client = new ClientDataBuilder().build();
 		ProductData productData = new ProductData(new Id("1"), new Money(
 				new BigDecimal(50)), "NAME", ProductType.DRUG, new Date());
 		ProductData productData2 = new ProductData(new Id("2"), new Money(
 				new BigDecimal(50)), "NAME2", ProductType.STANDARD, new Date());
 
 		InvoiceRequest request = new InvoiceRequest(client);
-		InvoiceFactory factory = new InvoiceFactory();
-		BookKeeper bookKeeper = new BookKeeper(factory);
+		BookKeeper bookKeeper = new BookKeeperBuilder().build();
 
 		request.add(new RequestItem(productData, 1, new Money(new BigDecimal(
 				255))));
